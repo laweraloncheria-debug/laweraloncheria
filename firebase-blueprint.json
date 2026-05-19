@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "Sale": {
+      "title": "Sale",
+      "description": "An order made by a customer",
+      "type": "object",
+      "properties": {
+        "items": { "type": "array", "description": "List of items purchased" },
+        "total": { "type": "number", "description": "Total price of the order" },
+        "customerName": { "type": "string", "description": "Name of the customer" },
+        "customerPhone": { "type": "string", "description": "Phone of the customer" },
+        "status": { "type": "string", "description": "Status of the sale (e.g. pending)" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the sale was created" }
+      },
+      "required": ["items", "total", "customerName", "customerPhone", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/sales/{saleId}": {
+      "schema": "Sale",
+      "description": "Historical sales record"
+    }
+  }
+}

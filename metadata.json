@@ -1,0 +1,6 @@
+{
+  "name": "Antojos",
+  "description": "Una aplicación de gastronomía honesta para disfrutar de los mejores antojos locales.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["voice_ordering", "local_delivery", "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

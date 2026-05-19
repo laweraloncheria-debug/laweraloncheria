@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Primitive Definition
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function isSignedIn() { return request.auth != null; }
+
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Sales Collection
+    match /sales/{saleId} {
+      function isValidSale(data) {
+        return data.keys().hasAll(['items', 'total', 'customerName', 'customerPhone', 'status', 'createdAt']) &&
+               data.keys().size() == 6 &&
+               data.items is list &&
+               data.total is number &&
+               data.customerName is string && data.customerName.size() <= 100 &&
+               data.customerPhone is string && data.customerPhone.size() <= 30 &&
+               data.status == 'pending' &&
+               data.createdAt == request.time;
+      }
+
+      allow create: if isValidId(saleId) && isValidSale(incoming());
+    }
+  }
+}
